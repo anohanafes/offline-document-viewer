@@ -1,0 +1,85 @@
+{
+  "name": "@anohanafes/vue-document-viewer",
+  "version": "1.0.0",
+  "description": "A Vue 2 component for previewing documents (PDF, DOCX, PPTX, XLSX) online without server dependencies",
+  "main": "dist/vue-document-viewer.common.js",
+  "module": "dist/vue-document-viewer.esm.js",
+  "unpkg": "dist/vue-document-viewer.umd.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/lib/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "vue",
+    "vue2",
+    "document",
+    "viewer",
+    "preview",
+    "pdf",
+    "docx", 
+    "pptx",
+    "xlsx",
+    "office",
+    "document-preview",
+    "file-viewer",
+    "online-preview"
+  ],
+  "author": "anohanafes <519855937@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anohanafes/offline-document-viewer.git",
+    "directory": "vue-document-viewer"
+  },
+  "bugs": {
+    "url": "https://github.com/anohanafes/offline-document-viewer/issues"
+  },
+  "homepage": "https://github.com/anohanafes/offline-document-viewer/tree/main/vue-document-viewer#readme",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib --name vue-document-viewer src/index.js",
+    "build:demo": "vue-cli-service build --dest demo-dist",
+    "lint": "vue-cli-service lint",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.0"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "jszip": "^3.10.1",
+    "mammoth": "^1.6.0",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.4",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/plugin-proposal-private-methods": "^7.18.6",
+    "@babel/plugin-transform-class-properties": "^7.27.1",
+    "@babel/plugin-transform-class-static-block": "^7.28.3",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.27.1",
+    "@babel/plugin-transform-optional-chaining": "^7.27.1",
+    "@babel/plugin-transform-private-methods": "^7.27.1",
+    "@babel/plugin-transform-private-property-in-object": "^7.27.1",
+    "@babel/preset-env": "^7.28.3",
+    "@vue/cli-service": "^4.5.19",
+    "babel-loader": "^10.0.0",
+    "core-js": "^3.45.1",
+    "file-loader": "^6.2.0",
+    "vue-template-compiler": "^2.6.14",
+    "worker-loader": "^3.0.8"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

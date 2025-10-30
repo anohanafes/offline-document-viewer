@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档直接预览</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pptx-styles.css">
+    <style>
+        /* 直接预览模式样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .app-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .app-header {
+            display: none; /* 隐藏头部 */
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .viewer-area {
+            height: 100%;
+            margin: 0;
+        }
+        
+        .viewer-container {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: #fff;
+        }
+        
+        .app-footer {
+            display: none; /* 隐藏底部 */
+        }
+        
+        /* 控制栏样式调整 */
+        .viewer-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 文档信息栏完全隐藏 */
+        .document-info {
+            display: none !important;
+        }
+        
+        /* 错误状态样式 */
+        .error-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #f8f9fa;
+            color: #666;
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .error-content {
+            max-width: 500px;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .error-title {
+            color: #e74c3c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-message {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .retry-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .retry-btn:hover {
+            background: #1976D2;
+        }
+        
+        /* 加载状态样式调整 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .viewer-controls {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 头部（隐藏） -->
+        <header class="app-header"></header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 文档信息栏 -->
+            <section class="document-info" id="documentInfo" style="display: none;">
+                <div class="info-item">
+                    <span class="info-label">文件名:</span>
+                    <span class="info-value" id="fileName"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">文件大小:</span>
+                    <span class="info-value" id="fileSize"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">文件类型:</span>
+                    <span class="info-value" id="fileType"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">来源:</span>
+                    <span class="info-value" id="fileSource" title="" style="
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 200px;
+                        display: inline-block;
+                    "></span>
+                </div>
+            </section>
+
+            <!-- 预览控制栏 -->
+            <section class="viewer-controls" id="viewerControls" style="display: none;">
+                <!-- PDF控制 -->
+                <div class="pdf-controls" id="pdfControls" style="display: none;">
+                    <button class="btn btn-secondary" id="prevPage" disabled>
+                        <span>◀</span> 上一页
+                    </button>
+                    <span class="page-info" id="pageInfo">第 1 页</span>
+                    <button class="btn btn-secondary" id="nextPage">
+                        下一页 <span>▶</span>
+                    </button>
+                    <div class="zoom-controls">
+                        <button class="btn btn-sm" id="zoomOut">🔍-</button>
+                        <span id="zoomLevel">100%</span>
+                        <button class="btn btn-sm" id="zoomIn">🔍+</button>
+                        <button class="btn btn-sm" id="fitWidth">适应宽度</button>
+                    </div>
+                </div>
+
+                <!-- DOCX控制 -->
+                <div class="docx-controls" id="docxControls" style="display: none;">
+                    <button class="btn btn-secondary" id="docxZoomOut">🔍-</button>
+                    <span id="docxZoomLevel">100%</span>
+                    <button class="btn btn-secondary" id="docxZoomIn">🔍+</button>
+                    <button class="btn btn-secondary" id="docxFitWidth">适应宽度</button>
+                </div>
+            </section>
+
+            <!-- 预览区域 -->
+            <section class="viewer-area">
+                <div class="viewer-container" id="viewerContainer">
+                    <!-- 初始加载状态 -->
+                    <div class="loading-overlay" style="display: flex; align-items: center; justify-content: center;">
+                        <div style="text-align: center;">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text" style="margin-top: 1rem; color: #666;">正在加载文档...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 加载状态覆盖层 -->
+                <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text" style="margin-top: 1rem; color: #666;">正在处理文档...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部（隐藏） -->
+        <footer class="app-footer"></footer>
+        
+        <!-- 隐藏的文件输入元素（供document-viewer.js使用） -->
+        <div id="uploadArea" style="display: none;">
+            <input type="file" id="fileInput" style="display: none;">
+        </div>
+    </div>
+
+    <!-- 基础依赖（必需） -->
+    <script src="lib/jquery.min.js"></script>
+    
+    <!-- 动态资源管理器 -->
+    <script src="js/resource-manager.js"></script>
+    <script src="js/document-processor-enhancer.js"></script>
+    
+    <!-- 主应用脚本 -->
+    <script src="js/document-viewer.js"></script>
+    
+    <!-- 直接预览专用脚本 -->
+    <script>
+        class DirectDocumentViewer {
+            constructor() {
+                this.documentViewer = null;
+                this.targetUrl = null;
+                this.init();
+            }
+
+            async init() {
+                try {
+                    // 从URL参数获取目标文档URL
+                    this.targetUrl = this.getUrlFromParams();
+                    
+                    if (!this.targetUrl) {
+                        this.showError('未提供文档URL', '请在URL中添加参数：?url=您的文档地址');
+                        return;
+                    }
+
+                    // 验证URL格式
+                    if (!this.isValidURL(this.targetUrl)) {
+                        this.showError('无效的URL格式', '请提供有效的HTTP/HTTPS文档地址');
+                        return;
+                    }
+
+                    // 等待文档查看器初始化完成
+                    await this.waitForDocumentViewer();
+                    
+                    // 获取已初始化的文档查看器实例
+                    this.documentViewer = window.documentViewer;
+                    
+                    if (!this.documentViewer) {
+                        throw new Error('文档查看器实例不可用');
+                    }
+
+                    // 开始加载文档
+                    await this.loadDocument();
+
+                } catch (error) {
+                    console.error('❌ 直接预览器初始化失败:', error);
+                    this.showError('初始化失败', error.message);
+                }
+            }
+
+            /**
+             * 从URL参数获取文档URL
+             * @returns {string|null} 文档URL
+             */
+            getUrlFromParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('url');
+            }
+
+            /**
+             * 验证URL格式
+             * @param {string} url - 要验证的URL
+             * @returns {boolean} 是否有效
+             */
+            isValidURL(url) {
+                try {
+                    const urlObj = new URL(url);
+                    return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            /**
+             * 等待文档查看器初始化
+             * @returns {Promise<void>}
+             */
+            async waitForDocumentViewer() {
+                return new Promise((resolve, reject) => {
+                    let attempts = 0;
+                    const maxAttempts = 50; // 最多等待5秒
+                    
+                    const checkViewer = () => {
+                        attempts++;
+                        
+                        // 检查文档查看器和动态加载增强器都已就绪
+                        if (window.documentViewer && 
+                            window.documentViewer.fileHandler && 
+                            window.documentEnhancer && 
+                            window.documentEnhancer.isEnhanced) {
+                            console.log('✅ 文档查看器和动态加载增强器都已就绪');
+                            resolve();
+                        } else if (attempts >= maxAttempts) {
+                            reject(new Error('文档查看器初始化超时'));
+                        } else {
+                            // 显示等待进度
+                            if (attempts % 10 === 0) {
+                                console.log(`⏳ 等待系统初始化... (${attempts}/${maxAttempts})`);
+                                console.log('  - 文档查看器:', !!window.documentViewer);
+                                console.log('  - 动态加载增强器:', !!window.documentEnhancer);
+                                console.log('  - 增强器状态:', window.documentEnhancer?.isEnhanced);
+                            }
+                            setTimeout(checkViewer, 100);
+                        }
+                    };
+                    
+                    checkViewer();
+                });
+            }
+
+            /**
+             * 加载文档
+             * @returns {Promise<void>}
+             */
+            async loadDocument() {
+                try {
+                    console.log('🌐 开始加载文档:', this.targetUrl);
+
+                    // 开始下载
+                    const response = await fetch(this.targetUrl, {
+                        method: 'GET',
+                        mode: 'cors'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP错误 ${response.status}: ${response.statusText}`);
+                    }
+
+                    // 获取文件信息
+                    const contentLength = response.headers.get('content-length');
+                    const totalSize = contentLength ? parseInt(contentLength, 10) : 0;
+                    const filename = this.getFileNameFromURL(this.targetUrl);
+
+                    // 获取文件内容
+                    const arrayBuffer = await response.arrayBuffer();
+
+                    console.log('✅ 文档下载完成，大小:', this.formatFileSize(arrayBuffer.byteLength));
+
+                    // 创建File对象
+                    const file = new File([arrayBuffer], filename, {
+                        type: this.getMimeTypeFromExtension(filename)
+                    });
+
+                    // 文档信息面板已隐藏，无需更新文件来源显示
+
+                    console.log('🎯 准备调用文件处理器...');
+                    console.log('  - 增强器状态:', window.documentEnhancer?.isEnhanced);
+                    console.log('  - 文件类型:', this.getFileTypeFromName(filename));
+
+                    // 调用被增强的文件处理逻辑（包含动态资源加载）
+                    await this.documentViewer.fileHandler.handleFile(file);
+
+                    console.log('🎉 文档预览成功!');
+
+                } catch (error) {
+                    console.error('❌ 文档加载失败:', error);
+                    
+                    let errorMessage = '文档加载失败';
+                    let errorDetail = error.message;
+                    
+                    if (error.name === 'TypeError' && error.message.includes('CORS')) {
+                        errorMessage = 'CORS跨域错误';
+                        errorDetail = '目标服务器不支持跨域访问，请检查服务器配置';
+                    } else if (error.message.includes('HTTP错误')) {
+                        errorMessage = '网络请求失败';
+                        errorDetail = error.message;
+                    } else if (error.message.includes('Failed to fetch')) {
+                        errorMessage = '网络连接失败';
+                        errorDetail = '请检查网络连接或目标URL是否正确';
+                    }
+                    
+                    this.showError(errorMessage, errorDetail);
+                }
+            }
+
+            /**
+             * 从URL提取文件名
+             * @param {string} url - URL地址
+             * @returns {string} 文件名
+             */
+            getFileNameFromURL(url) {
+                try {
+                    const urlObj = new URL(url);
+                    const pathname = urlObj.pathname;
+                    const filename = pathname.split('/').pop();
+                    return filename && filename.includes('.') ? filename : 'document';
+                } catch (e) {
+                    return 'document';
+                }
+            }
+
+            /**
+             * 根据文件扩展名获取MIME类型
+             * @param {string} filename - 文件名
+             * @returns {string} MIME类型
+             */
+            getMimeTypeFromExtension(filename) {
+                const ext = filename.toLowerCase().split('.').pop();
+                const mimeTypes = {
+                    'pdf': 'application/pdf',
+                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'csv': 'text/csv'
+                };
+                return mimeTypes[ext] || 'application/octet-stream';
+            }
+
+            /**
+             * 格式化文件大小
+             * @param {number} bytes - 字节数
+             * @returns {string} 格式化后的大小
+             */
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            /**
+             * 从文件名获取文件类型
+             * @param {string} filename - 文件名
+             * @returns {string} 文件类型
+             */
+            getFileTypeFromName(filename) {
+                const ext = filename.toLowerCase().split('.').pop();
+                const typeMap = {
+                    'pdf': 'pdf',
+                    'docx': 'docx', 'doc': 'docx',
+                    'pptx': 'pptx', 'ppt': 'pptx', 
+                    'xlsx': 'xlsx', 'xls': 'xlsx',
+                    'csv': 'csv'
+                };
+                return typeMap[ext] || 'unknown';
+            }
+
+            /**
+             * 显示错误状态
+             * @param {string} title - 错误标题
+             * @param {string} message - 错误详情
+             */
+            showError(title, message) {
+                const viewerContainer = document.getElementById('viewerContainer');
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                
+                // 隐藏加载状态
+                if (loadingOverlay) {
+                    loadingOverlay.style.display = 'none';
+                }
+
+                if (viewerContainer) {
+                    viewerContainer.innerHTML = `
+                        <div class="error-state">
+                            <div class="error-content">
+                                <div class="error-icon">❌</div>
+                                <h2 class="error-title">${title}</h2>
+                                <p class="error-message">${message}</p>
+                                <button class="retry-btn" onclick="window.location.reload()">
+                                    🔄 重新加载
+                                </button>
+                                <div style="margin-top: 1rem;">
+                                    <small style="color: #999;">
+                                        目标URL: <br>
+                                        <code style="word-break: break-all; background: #f5f5f5; padding: 0.2rem 0.4rem; border-radius: 4px;">${this.targetUrl || '未提供'}</code>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // 页面加载完成后自动初始化并开始预览
+        document.addEventListener('DOMContentLoaded', () => {
+            new DirectDocumentViewer();
+        });
+    </script>
+</body>
+</html>

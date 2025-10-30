@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL文档预览器 - 支持PDF/DOCX/PPTX</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pptx-styles.css">
+    <style>
+        /* URL输入框特定样式 */
+        .url-input-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 2px dashed #e1dfdd;
+            transition: all 0.3s ease;
+        }
+        .url-input-section:hover {
+            border-color: #2196F3;
+            background: #f5f9ff;
+        }
+        .url-input-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .url-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e1dfdd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .url-input:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+        .load-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            white-space: nowrap;
+        }
+        .load-btn:hover:not(:disabled) {
+            background: #1976D2;
+        }
+        .load-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .url-examples {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+        .url-examples strong {
+            color: #333;
+        }
+        .url-examples code {
+            background: #f0f0f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        .download-progress {
+            margin-top: 1rem;
+            display: none;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #2196F3;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .progress-text {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+        .error-message {
+            text-align: center;
+            padding: 2rem;
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            color: #e53e3e;
+            margin: 2rem auto;
+            max-width: 500px;
+        }
+        .error-message h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .error-message code {
+            background: #f7fafc;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1>🌐 URL文档预览器</h1>
+                <p>输入文档URL • 在线预览 • 支持多种格式</p>
+                <div style="margin-top: 0.5rem;">
+                    <a href="index.html" style="color: white; text-decoration: none; opacity: 0.8;">
+                        ← 返回本地文件预览
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- URL输入区域 -->
+            <section class="url-input-section">
+                <div class="upload-icon" style="text-align: center; font-size: 3rem; margin-bottom: 1rem;">🔗</div>
+                <h3 style="text-align: center; margin-bottom: 1.5rem;">输入文档URL地址</h3>
+                
+                <div class="url-input-container">
+                    <input type="url" 
+                           id="urlInput" 
+                           class="url-input" 
+                           placeholder="请输入文档URL，如：https://example.com/document.pptx"
+                           value="">
+                    <button id="loadBtn" class="load-btn">📥 加载预览</button>
+                </div>
+
+                <!-- 隐藏的文件输入元素（供document-viewer.js使用） -->
+                <div id="uploadArea" style="display: none;">
+                    <input type="file" id="fileInput" style="display: none;">
+                </div>
+
+                <div class="download-progress" id="downloadProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">准备下载...</div>
+                </div>
+
+                <div class="supported-formats" style="text-align: center; margin-bottom: 1rem;">
+                    <span class="format-badge pdf">PDF</span>
+                    <span class="format-badge docx">DOCX</span>
+                    <span class="format-badge pptx">PPTX</span>
+                    <span class="format-badge" style="background: #28a745;">XLSX</span>
+                    <span class="format-badge" style="background: #6f42c1;">CSV</span>
+                </div>
+
+                <div class="url-examples">
+                    <strong>支持的URL示例：</strong><br>
+                    • 直接文件链接：<code>https://example.com/demo.pptx</code><br>
+                    • CDN文件：<code>https://cdn.example.com/files/report.pdf</code><br>
+                    • 文件分享服务：<code>https://drive.google.com/uc?id=...</code><br>
+                    <br>
+                    <strong>注意：</strong>目标服务器必须支持CORS跨域访问
+                </div>
+            </section>
+
+            <!-- 文档信息栏（复用原有结构） -->
+            <section class="document-info" id="documentInfo" style="display: none;">
+                <div class="info-item">
+                    <span class="info-label">文件名:</span>
+                    <span class="info-value" id="fileName"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">文件大小:</span>
+                    <span class="info-value" id="fileSize"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">文件类型:</span>
+                    <span class="info-value" id="fileType"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">文件来源:</span>
+                    <span class="info-value" id="fileSource"></span>
+                </div>
+            </section>
+
+            <!-- 预览控制栏（复用原有结构） -->
+            <section class="viewer-controls" id="viewerControls" style="display: none;">
+                <!-- PDF控制 -->
+                <div class="pdf-controls" id="pdfControls" style="display: none;">
+                    <button class="btn btn-secondary" id="prevPage" disabled>
+                        <span>◀</span> 上一页
+                    </button>
+                    <span class="page-info" id="pageInfo">第 1 页</span>
+                    <button class="btn btn-secondary" id="nextPage">
+                        下一页 <span>▶</span>
+                    </button>
+                    <div class="zoom-controls">
+                        <button class="btn btn-sm" id="zoomOut">🔍-</button>
+                        <span id="zoomLevel">100%</span>
+                        <button class="btn btn-sm" id="zoomIn">🔍+</button>
+                        <button class="btn btn-sm" id="fitWidth">适应宽度</button>
+                    </div>
+                </div>
+
+                <!-- DOCX控制 -->
+                <div class="docx-controls" id="docxControls" style="display: none;">
+                    <button class="btn btn-secondary" id="docxZoomOut">🔍-</button>
+                    <span id="docxZoomLevel">100%</span>
+                    <button class="btn btn-secondary" id="docxZoomIn">🔍+</button>
+                    <button class="btn btn-secondary" id="docxFitWidth">适应宽度</button>
+                </div>
+            </section>
+
+            <!-- 预览区域（复用原有结构） -->
+            <section class="viewer-area">
+                <div class="viewer-container" id="viewerContainer">
+                    <div class="welcome-message">
+                        <div class="welcome-icon">🔗</div>
+                        <h2>欢迎使用URL文档预览器</h2>
+                        <p>请输入一个文档URL开始预览</p>
+                        <div class="features">
+                            <div class="feature">
+                                <span class="feature-icon">🌐</span>
+                                <span>在线预览</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">⚡</span>
+                                <span>快速加载</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">🎯</span>
+                                <span>多种格式</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 加载状态 -->
+                <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">正在处理文档...</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部信息 -->
+        <footer class="app-footer">
+            <p>🌐 在线文档预览 • 🔗 支持URL链接 • ⚡ 快速加载</p>
+        </footer>
+    </div>
+
+    <!-- 基础依赖（必需） -->
+    <script src="lib/jquery.min.js"></script>
+    
+    <!-- 动态资源管理器 -->
+    <script src="js/resource-manager.js"></script>
+    <script src="js/document-processor-enhancer.js"></script>
+    
+    <!-- 主应用脚本 -->
+    <script src="js/document-viewer.js"></script>
+    
+    <!-- URL处理专用脚本 -->
+    <script>
+        class URLDocumentViewer {
+            constructor() {
+                this.documentViewer = null;
+                this.init();
+            }
+
+            async init() {
+                try {
+                    // 等待原有的文档查看器初始化完成
+                    await this.waitForDocumentViewer();
+                    
+                    // 获取已经初始化的文档查看器实例
+                    this.documentViewer = window.documentViewer;
+                    
+                    if (!this.documentViewer) {
+                        throw new Error('文档查看器实例不可用');
+                    }
+                    
+                    // 绑定URL处理事件
+                    this.bindURLEvents();
+                    
+                    console.log('✅ URL文档预览器初始化成功');
+                    
+                } catch (error) {
+                    console.error('❌ URL文档预览器初始化失败:', error);
+                    this.showInitializationError(error.message);
+                }
+            }
+
+            async waitForDocumentViewer() {
+                // 等待document-viewer.js完成初始化
+                return new Promise((resolve, reject) => {
+                    let attempts = 0;
+                    const maxAttempts = 50; // 最多等待5秒
+                    
+                    const checkViewer = () => {
+                        attempts++;
+                        
+                        if (window.documentViewer && window.documentViewer.fileHandler) {
+                            // 文档查看器已准备就绪
+                            resolve();
+                        } else if (attempts >= maxAttempts) {
+                            // 超时
+                            reject(new Error('文档查看器初始化超时'));
+                        } else {
+                            // 继续等待
+                            setTimeout(checkViewer, 100);
+                        }
+                    };
+                    
+                    checkViewer();
+                });
+            }
+
+            showInitializationError(errorMessage) {
+                const container = document.getElementById('viewerContainer');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="error-message">
+                            <h3>❌ URL预览器初始化失败</h3>
+                            <p>${errorMessage}</p>
+                            <p>请刷新页面重试，或检查浏览器控制台获取详细错误信息</p>
+                        </div>
+                    `;
+                }
+            }
+
+            bindURLEvents() {
+                const urlInput = document.getElementById('urlInput');
+                const loadBtn = document.getElementById('loadBtn');
+
+                // 回车键加载
+                urlInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && urlInput.value.trim()) {
+                        this.loadFromURL(urlInput.value.trim());
+                    }
+                });
+
+                // 按钮点击加载
+                loadBtn.addEventListener('click', () => {
+                    const url = urlInput.value.trim();
+                    if (url) {
+                        this.loadFromURL(url);
+                    }
+                });
+
+                // 实时验证URL格式
+                urlInput.addEventListener('input', () => {
+                    const url = urlInput.value.trim();
+                    loadBtn.disabled = !url || !this.isValidURL(url);
+                });
+            }
+
+
+            isValidURL(string) {
+                try {
+                    const url = new URL(string);
+                    return url.protocol === 'http:' || url.protocol === 'https:';
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            getFileNameFromURL(url) {
+                try {
+                    const urlObj = new URL(url);
+                    const pathname = urlObj.pathname;
+                    const filename = pathname.split('/').pop();
+                    return filename && filename.includes('.') ? filename : 'document';
+                } catch (e) {
+                    return 'document';
+                }
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            showProgress() {
+                const progressDiv = document.getElementById('downloadProgress');
+                progressDiv.style.display = 'block';
+            }
+
+            hideProgress() {
+                const progressDiv = document.getElementById('downloadProgress');
+                progressDiv.style.display = 'none';
+            }
+
+            updateProgress(loaded, total) {
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                
+                if (total > 0) {
+                    const percent = (loaded / total) * 100;
+                    progressFill.style.width = percent + '%';
+                    progressText.textContent = `下载中... ${this.formatFileSize(loaded)} / ${this.formatFileSize(total)} (${Math.round(percent)}%)`;
+                } else {
+                    progressFill.style.width = '50%';
+                    progressText.textContent = `下载中... ${this.formatFileSize(loaded)}`;
+                }
+            }
+
+            async loadFromURL(url) {
+                const loadBtn = document.getElementById('loadBtn');
+                const urlInput = document.getElementById('urlInput');
+                
+                try {
+                    // 禁用按钮，显示进度
+                    loadBtn.disabled = true;
+                    loadBtn.textContent = '📥 加载中...';
+                    this.showProgress();
+
+                    // 开始下载
+                    console.log('🌐 开始从URL下载文件:', url);
+                    
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        mode: 'cors' // 明确指定CORS模式
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP错误: ${response.status} ${response.statusText}`);
+                    }
+
+                    // 获取文件信息
+                    const contentLength = response.headers.get('content-length');
+                    const totalSize = contentLength ? parseInt(contentLength, 10) : 0;
+                    const filename = this.getFileNameFromURL(url);
+
+                    // 创建Reader来跟踪下载进度
+                    const reader = response.body.getReader();
+                    const chunks = [];
+                    let receivedLength = 0;
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        chunks.push(value);
+                        receivedLength += value.length;
+                        
+                        // 更新进度
+                        this.updateProgress(receivedLength, totalSize);
+                    }
+
+                    // 合并所有chunks
+                    const arrayBuffer = new Uint8Array(receivedLength);
+                    let position = 0;
+                    for (let chunk of chunks) {
+                        arrayBuffer.set(chunk, position);
+                        position += chunk.length;
+                    }
+
+                    console.log('✅ 文件下载完成，大小:', this.formatFileSize(receivedLength));
+
+                    // 创建File对象（这是关键步骤！）
+                    const file = new File([arrayBuffer], filename, {
+                        type: this.getMimeTypeFromExtension(filename)
+                    });
+
+                    // 隐藏进度条
+                    this.hideProgress();
+
+                    // 更新文件来源显示
+                    const fileSource = document.getElementById('fileSource');
+                    if (fileSource) {
+                        fileSource.textContent = url;
+                    }
+
+                    // 调用现有的文件处理逻辑！
+                    await this.documentViewer.fileHandler.handleFile(file);
+
+                    console.log('🎉 URL文档预览成功!');
+
+                } catch (error) {
+                    console.error('❌ URL加载失败:', error);
+                    this.hideProgress();
+                    
+                    let errorMessage = '文档加载失败: ';
+                    if (error.name === 'TypeError' && error.message.includes('CORS')) {
+                        errorMessage += '目标服务器不支持跨域访问(CORS)';
+                    } else if (error.message.includes('HTTP错误')) {
+                        errorMessage += error.message;
+                    } else {
+                        errorMessage += error.message;
+                    }
+                    
+                    // 使用现有的错误显示功能
+                    this.documentViewer.uiController.showError(errorMessage);
+                    
+                } finally {
+                    // 恢复按钮状态
+                    loadBtn.disabled = false;
+                    loadBtn.textContent = '📥 加载预览';
+                }
+            }
+
+            getMimeTypeFromExtension(filename) {
+                const ext = filename.toLowerCase().split('.').pop();
+                const mimeTypes = {
+                    'pdf': 'application/pdf',
+                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'csv': 'text/csv'
+                };
+                return mimeTypes[ext] || 'application/octet-stream';
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            new URLDocumentViewer();
+        });
+    </script>
+</body>
+</html>

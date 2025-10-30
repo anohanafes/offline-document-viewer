@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>离线文档预览器 - 支持PDF/DOCX/PPTX</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pptx-styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1>📄 离线文档预览器</h1>
+                <p>完全本地部署 • 无需网络 • 支持多种格式</p>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 文件上传区域 -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <h3>点击选择文件</h3>
+                    <input type="file" id="fileInput" class="file-input" 
+                           accept=".pdf,.docx,.pptx,.doc,.ppt">
+                    <div class="supported-formats">
+                        <span class="format-badge pdf">PDF</span>
+                        <span class="format-badge docx">DOCX</span>
+                        <span class="format-badge pptx">PPTX</span>
+                    </div>
+                    <p class="upload-hint">最大支持50MB文件</p>
+                </div>
+            </section>
+
+            <!-- 文档信息栏 -->
+            <section class="document-info" id="documentInfo" style="display: none;">
+                <div class="info-item">
+                    <span class="info-label">文件名:</span>
+                    <span class="info-value" id="fileName"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">文件大小:</span>
+                    <span class="info-value" id="fileSize"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">文件类型:</span>
+                    <span class="info-value" id="fileType"></span>
+                </div>
+            </section>
+
+            <!-- 预览控制栏 -->
+            <section class="viewer-controls" id="viewerControls" style="display: none;">
+                <!-- PDF控制 -->
+                <div class="pdf-controls" id="pdfControls" style="display: none;">
+                    <button class="btn btn-secondary" id="prevPage" disabled>
+                        <span>◀</span> 上一页
+                    </button>
+                    <span class="page-info" id="pageInfo">第 1 页</span>
+                    <button class="btn btn-secondary" id="nextPage">
+                        下一页 <span>▶</span>
+                    </button>
+                    <div class="zoom-controls">
+                        <button class="btn btn-sm" id="zoomOut">🔍-</button>
+                        <span id="zoomLevel">100%</span>
+                        <button class="btn btn-sm" id="zoomIn">🔍+</button>
+                        <button class="btn btn-sm" id="fitWidth">适应宽度</button>
+                    </div>
+                </div>
+
+                <!-- DOCX控制 -->
+                <div class="docx-controls" id="docxControls" style="display: none;">
+                    <button class="btn btn-secondary" id="docxZoomOut">🔍-</button>
+                    <span id="docxZoomLevel">100%</span>
+                    <button class="btn btn-secondary" id="docxZoomIn">🔍+</button>
+                    <button class="btn btn-secondary" id="docxFitWidth">适应宽度</button>
+                </div>
+
+                <!-- PPTX控制 -->
+                <!-- <div class="pptx-controls" id="pptxControls" style="display: none;">
+                    <button class="btn btn-secondary" id="pptxPrevSlide" disabled>
+                        <span>◀</span> 上一张
+                    </button>
+                    <span class="slide-info" id="slideInfo">第 1 张 / 共 1 张</span>
+                    <button class="btn btn-secondary" id="pptxNextSlide">
+                        下一张 <span>▶</span>
+                    </button>
+                    <button class="btn btn-primary" id="toggleSlideshow">🎬 幻灯片播放</button>
+                </div> -->
+            </section>
+
+            <!-- 预览区域 -->
+            <section class="viewer-area">
+                <div class="viewer-container" id="viewerContainer">
+                    <div class="welcome-message">
+                        <div class="welcome-icon">📄</div>
+                        <h2>欢迎使用离线文档预览器</h2>
+                        <p>请选择一个文档文件开始预览</p>
+                        <div class="features">
+                            <div class="feature">
+                                <span class="feature-icon">🔒</span>
+                                <span>完全离线</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">⚡</span>
+                                <span>快速预览</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">🎯</span>
+                                <span>多种格式</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 加载状态 -->
+                <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">正在处理文档...</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部信息 -->
+        <footer class="app-footer">
+            <p>🌐 完全离线运行 • 📱 点击选择文件 • 🔐 数据安全</p>
+        </footer>
+    </div>
+    <!-- 基础依赖（必需） -->
+    <script src="lib/jquery.min.js"></script>
+    
+    <!-- 动态资源管理器 -->
+    <script src="js/resource-manager.js"></script>
+    <script src="js/document-processor-enhancer.js"></script>
+    
+    <!-- 主应用脚本 -->
+    <script src="js/document-viewer.js"></script>
+</body>
+</html>

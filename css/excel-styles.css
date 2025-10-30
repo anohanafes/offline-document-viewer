@@ -1,0 +1,397 @@
+/* Excel查看器样式 */
+.excel-viewer {
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Excel头部 */
+.excel-header {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.excel-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.excel-info p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95em;
+}
+
+.excel-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.excel-controls .btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.excel-controls .btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 工作表选项卡 */
+.sheet-tabs {
+    background: #e9ecef;
+    padding: 0;
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.sheet-tab {
+    background: transparent;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    color: #6c757d;
+    font-weight: 500;
+    transition: all 0.2s;
+    min-width: 120px;
+    text-align: center;
+}
+
+.sheet-tab:hover {
+    background: #f8f9fa;
+    color: #495057;
+}
+
+.sheet-tab.active {
+    background: white;
+    color: #28a745;
+    border-bottom-color: #28a745;
+    font-weight: 600;
+}
+
+/* Excel内容区域 */
+.excel-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+}
+
+.excel-toolbar {
+    background: #f8f9fa;
+    padding: 10px 20px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sheet-info {
+    color: #6c757d;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.view-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.view-controls .btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s;
+}
+
+.view-controls .btn:hover {
+    background: #5a6268;
+}
+
+/* 表格容器 */
+.excel-table-container {
+    flex: 1;
+    overflow: auto;
+    padding: 20px;
+    background: white;
+}
+
+.excel-sheet-wrapper {
+    min-height: 100%;
+}
+
+/* Excel表格样式 */
+#excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#excel-table th,
+#excel-table td {
+    border: 1px solid #e9ecef;
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+    min-width: 60px;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+#excel-table th {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    font-weight: 600;
+    color: #495057;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#excel-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+#excel-table tr:hover {
+    background-color: #e3f2fd;
+}
+
+/* 数字单元格右对齐 */
+#excel-table td:has-text([0-9]) {
+    text-align: right;
+}
+
+/* 加载状态 */
+.excel-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    color: #6c757d;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #28a745;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.excel-loading h3 {
+    margin: 0 0 10px 0;
+    color: #495057;
+}
+
+.excel-loading p {
+    margin: 0;
+    color: #6c757d;
+}
+
+/* 错误状态 */
+.excel-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    color: #dc3545;
+    text-align: center;
+    padding: 40px;
+}
+
+.error-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.excel-error h3 {
+    margin: 0 0 15px 0;
+    color: #dc3545;
+}
+
+.excel-error p {
+    margin: 0 0 20px 0;
+    color: #6c757d;
+}
+
+.excel-error .btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.excel-error .btn:hover {
+    background: #c82333;
+}
+
+/* 空工作表 */
+.excel-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #6c757d;
+    font-size: 1.1em;
+    font-style: italic;
+}
+
+/* 全屏模式 */
+.excel-viewer.fullscreen-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: white;
+}
+
+.excel-viewer.fullscreen-mode .excel-table-container {
+    padding: 10px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .excel-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .excel-controls {
+        justify-content: center;
+    }
+    
+    .excel-toolbar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .view-controls {
+        justify-content: center;
+    }
+    
+    .sheet-tabs {
+        justify-content: flex-start;
+    }
+    
+    .sheet-tab {
+        min-width: 100px;
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+    
+    #excel-table {
+        font-size: 12px;
+    }
+    
+    #excel-table th,
+    #excel-table td {
+        padding: 6px 8px;
+        min-width: 50px;
+        max-width: 200px;
+    }
+}
+
+/* 滚动条样式 */
+.excel-table-container::-webkit-scrollbar,
+.sheet-tabs::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.excel-table-container::-webkit-scrollbar-track,
+.sheet-tabs::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.excel-table-container::-webkit-scrollbar-thumb,
+.sheet-tabs::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.excel-table-container::-webkit-scrollbar-thumb:hover,
+.sheet-tabs::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 按钮通用样式 */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}

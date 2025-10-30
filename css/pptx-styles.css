@@ -1,0 +1,1358 @@
+/* PPTX专用样式 */
+.pptx-viewer {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    min-height: 500px;
+}
+
+.pptx-info {
+    background: #e8f4fd;
+    border: 1px solid #bee5eb;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #0c5460;
+    text-align: center;
+    font-weight: 500;
+}
+
+.pptx-notice {
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pptx-notice h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+.pptx-notice p {
+    color: #5a6c7d;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.pptx-suggestions {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.pptx-suggestions h4 {
+    color: #e67e22;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.pptx-suggestions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.pptx-suggestions li {
+    padding: 8px 0;
+    color: #5a6c7d;
+    position: relative;
+    padding-left: 20px;
+}
+
+.pptx-suggestions li:before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+}
+
+/* 幻灯片样式（当PPTXjs完全工作时） */
+.slide {
+    background: white;
+    margin: 20px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    min-height: 600px;
+    position: relative;
+}
+
+.slide-content {
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.slide-title {
+    font-size: 2em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.slide-text {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #34495e;
+    text-align: center;
+}
+
+/* 幻灯片播放模式 */
+.slideshow-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slideshow-mode .slide {
+    max-width: 90vw;
+    max-height: 90vh;
+    margin: 0;
+}
+
+.slideshow-controls {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px 25px;
+    border-radius: 25px;
+}
+
+.slideshow-controls button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.slideshow-controls button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 进度条 */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #ecf0f1;
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+/* 工具提示 */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+/* Enhanced PPTX幻灯片放映器样式 */
+.pptx-slideshow {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.pptx-slide-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* 幻灯片容器 */
+.pptx-slide-container {
+    background: #ffffff;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+/* 单个幻灯片样式 */
+.pptx-slide {
+    width: 100%;
+    max-width: 800px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.pptx-slide:hover {
+    transform: translateY(-2px);
+}
+
+/* 幻灯片头部 */
+.slide-header {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slide-header .slide-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+}
+
+.slide-number {
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+/* 幻灯片内容区域 */
+.slide-body {
+    padding: 30px;
+    min-height: 350px;
+}
+
+.slide-content-inner {
+    text-align: center;
+}
+
+/* 幻灯片标题文本 */
+.slide-title-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 25px 0;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #3498db;
+    display: inline-block;
+}
+
+/* 混合内容区域 */
+.slide-mixed-content {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+}
+
+/* 幻灯片文本内容 */
+.slide-text-content {
+    width: 100%;
+    max-width: 600px;
+}
+
+.slide-paragraph {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #34495e;
+    margin: 15px 0;
+    text-align: left;
+}
+
+/* 幻灯片图片内容 */
+.slide-images-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.slide-image-container {
+    text-align: center;
+    margin: 15px 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.slide-image-container:hover {
+    transform: scale(1.02);
+}
+
+.slide-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.slide-image:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.slide-image-caption {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #7f8c8d;
+    font-style: italic;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 图片加载状态 */
+.slide-image[src*="data:image/svg"] {
+    opacity: 0.6;
+    filter: grayscale(100%);
+}
+
+.slide-image:not([src*="data:image/svg"]) {
+    opacity: 1;
+    filter: none;
+}
+
+/* 空幻灯片样式 */
+.slide-empty {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 40px;
+}
+
+.slide-empty h3 {
+    color: #3498db;
+    margin-bottom: 15px;
+}
+
+/* 缩略图导航 */
+.pptx-thumbnail-nav {
+    background: #e9ecef;
+    padding: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.thumbnail-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px 0;
+    justify-content: center;
+}
+
+.thumbnail-item {
+    min-width: 120px;
+    height: 80px;
+    background: #ffffff;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.thumbnail-item:hover {
+    border-color: #3498db;
+    transform: scale(1.05);
+}
+
+.thumbnail-item.active {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+}
+
+.thumbnail-content {
+    padding: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.thumbnail-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #2c3e50;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.thumbnail-number {
+    font-size: 11px;
+    color: #7f8c8d;
+    text-align: right;
+    margin-top: auto;
+}
+
+/* 错误状态样式 */
+.slide-error {
+    text-align: center;
+    color: #e74c3c;
+    font-size: 16px;
+    padding: 40px;
+}
+
+/* 动画效果 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.pptx-slide.active {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* 响应式幻灯片 */
+@media (max-width: 768px) {
+    .pptx-notice {
+        padding: 20px;
+    }
+    
+    .pptx-suggestions {
+        padding: 15px;
+    }
+    
+    .slide {
+        margin: 10px;
+        min-height: 400px;
+    }
+    
+    .slide-title {
+        font-size: 1.5em;
+    }
+    
+    .slide-text {
+        font-size: 1em;
+    }
+    
+    .slideshow-controls {
+        bottom: 20px;
+        padding: 10px 20px;
+    }
+    
+    .pptx-slideshow {
+        margin: 10px;
+    }
+    
+    .pptx-slide-container {
+        padding: 20px;
+    }
+    
+    .slide-body {
+        padding: 20px;
+    }
+    
+    .slide-title-text {
+        font-size: 24px;
+    }
+    
+    .slide-paragraph {
+        font-size: 14px;
+    }
+    
+    .thumbnail-container {
+        justify-content: flex-start;
+    }
+    
+    .thumbnail-item {
+        min-width: 100px;
+        height: 70px;
+    }
+    
+    /* 移动端图片样式调整 */
+    .slide-mixed-content {
+        gap: 15px;
+    }
+    
+    .slide-image-container {
+        padding: 10px;
+        margin: 10px 0;
+    }
+    
+    .slide-image {
+        max-width: 100%;
+        max-height: 250px;
+    }
+    
+    .slide-image-caption {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pptx-slide-container {
+        padding: 15px;
+    }
+    
+    .slide-body {
+        padding: 15px;
+    }
+    
+    .slide-title-text {
+        font-size: 20px;
+    }
+    
+    .slide-header {
+        padding: 12px 15px;
+    }
+    
+    .slide-header .slide-title {
+        font-size: 16px;
+    }
+    
+    .slide-number {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+    
+    .thumbnail-item {
+        min-width: 80px;
+        height: 60px;
+    }
+    
+    .thumbnail-content {
+        padding: 5px;
+    }
+    
+    /* 小屏幕图片优化 */
+    .slide-mixed-content {
+        gap: 10px;
+    }
+    
+    .slide-image-container {
+        padding: 8px;
+        margin: 8px 0;
+    }
+    
+    .slide-image {
+        max-height: 200px;
+    }
+    
+    .slide-text-content {
+        max-width: 100%;
+    }
+    
+    .slide-paragraph {
+        font-size: 14px;
+        padding: 0 5px;
+    }
+}
+
+/* Office-Viewer样式 */
+.office-viewer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.office-viewer-header {
+    background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.office-viewer-header h3 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.viewer-info {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.office-viewer-content {
+    min-height: 500px;
+    padding: 20px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #0078d4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-message {
+    text-align: center;
+    color: #666;
+    padding: 40px;
+}
+
+.preview-notice {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.preview-notice p {
+    margin: 5px 0;
+    color: #1976d2;
+}
+
+.fallback-preview {
+    padding: 20px;
+    text-align: center;
+}
+
+.fallback-header h3 {
+    color: #0078d4;
+    margin-bottom: 20px;
+}
+
+.file-info {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.file-info p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.preview-options {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.preview-options h4 {
+    color: #0078d4;
+    margin-bottom: 15px;
+}
+
+.preview-options ul {
+    list-style: none;
+    padding: 0;
+}
+
+.preview-options li {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.technical-note {
+    background: #e9ecef;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: left;
+}
+
+.technical-note h4 {
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.technical-note p {
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 图片提取预览样式 */
+.image-extraction-preview {
+    text-align: center;
+}
+
+.extracted-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.extracted-image-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-header {
+    font-weight: 600;
+    color: #0078d4;
+    margin-bottom: 10px;
+}
+
+.image-caption {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* 文本提取预览样式 */
+.text-extraction-preview {
+    text-align: left;
+}
+
+.slides-text-content {
+    margin-top: 20px;
+}
+
+.slide-text-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.slide-text-header {
+    background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slide-text-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.slide-number {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.slide-text-body {
+    padding: 20px;
+}
+
+.slide-text-paragraph {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.slide-text-paragraph:last-child {
+    border-bottom: none;
+}
+
+.slide-text-empty {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* PowerPoint风格布局样式 */
+.ppt-layout-container {
+    width: 100%;
+    height: 72vh;
+    background: #f3f2f1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 头部工具栏 */
+.ppt-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e1dfdd;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ppt-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tool-button {
+    background: #f3f2f1;
+    color: #323130;
+    border: 1px solid #e1dfdd;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.tool-button:hover {
+    background: #edebe9;
+    border-color: #c8c6c4;
+}
+
+.zoom-level {
+    font-size: 14px;
+    font-weight: 600;
+    color: #323130;
+    min-width: 60px;
+    text-align: center;
+}
+
+.slide-counter {
+    font-size: 16px;
+    font-weight: 600;
+    color: #323130;
+    min-width: 150px;
+    text-align: center;
+}
+
+.fullscreen {
+    margin-left: auto;
+}
+
+/* 主要内容区域 */
+.ppt-main-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* 左侧缩略图区域 */
+.ppt-sidebar {
+    width: 280px;
+    background: #faf9f8;
+    border-right: 1px solid #e1dfdd;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    background: #f3f2f1;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #323130;
+    border-bottom: 1px solid #e1dfdd;
+}
+
+.thumbnails-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+/* 缩略图样式 */
+.thumbnail-slide {
+    background: #ffffff;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.thumbnail-slide:hover {
+    border-color: #0078d4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail-slide.active {
+    border-color: #0078d4;
+    background: #f3f9ff;
+    box-shadow: 0 0 0 1px #0078d4;
+}
+
+.thumbnail-number {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #605e5c;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.thumbnail-slide.active .thumbnail-number {
+    background: #0078d4;
+}
+
+.thumbnail-content {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+}
+
+.thumbnail-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #323130;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.thumbnail-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f7f6;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.thumbnail-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.thumbnail-text {
+    font-size: 24px;
+    color: #a19f9d;
+}
+
+/* 右侧预览区域 */
+.ppt-preview-area {
+    flex: 1;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-header {
+    background: #faf9f8;
+    border-bottom: 1px solid #e1dfdd;
+    padding: 12px 20px;
+}
+
+.current-slide-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.current-slide-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #323130;
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.current-slide-number {
+    font-size: 14px;
+    color: #605e5c;
+    background: #e1dfdd;
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+/* 幻灯片显示区域 */
+.slide-display-area {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-content-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 幻灯片导航按钮样式 */
+.slide-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
+
+.nav-button {
+    background-color: #4a89dc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #3a70c0;
+}
+
+.nav-button:disabled {
+    background-color: #b5c7e3;
+    cursor: not-allowed;
+}
+
+.slide-counter {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* 显示区域内容样式 */
+.display-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #0078d4;
+    margin: 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e3f2fd;
+}
+
+.display-content-text {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #323130;
+    margin: 16px 0;
+    padding: 10px 0;
+}
+
+.display-image-container {
+    margin: 25px 0;
+    text-align: center;
+}
+
+.display-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.display-image:hover {
+    transform: scale(1.02);
+}
+
+.display-image-caption {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #605e5c;
+    font-style: italic;
+}
+
+/* 绝对定位元素样式 */
+.slide-canvas {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%!important;
+    flex: 1;
+    overflow: auto !important;
+}
+
+.positioned-subtitle {
+    /* 不设置任何默认样式，完全使用PPT原始格式 */
+}
+
+.positioned-text {
+    /* 不设置任何默认样式，完全使用PPT原始格式 */
+}
+
+.positioned-image-container {
+    border-radius: 4px;
+    overflow: visible;
+}
+
+.positioned-image-caption {
+    font-size: 12px !important;
+    color: #605e5c !important;
+    background: rgba(255,255,255,0.9) !important;
+}
+
+.display-empty {
+    text-align: center;
+    color: #a19f9d;
+    font-style: italic;
+    padding: 60px 20px;
+    background: #f8f7f6;
+    border-radius: 8px;
+    border: 2px dashed #e1dfdd;
+}
+
+/* 组合图片样式 */
+.images-combined-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 0;
+}
+
+.image-combined-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.image-combined-header {
+    font-weight: 600;
+    color: #0078d4;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.image-combined-caption {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.no-images {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 40px;
+}
+
+/* PowerPoint风格响应式设计 */
+@media (max-width: 768px) {
+    .ppt-layout-container {
+        height: 500px;
+    }
+    
+    .ppt-main-content {
+        flex-direction: column;
+    }
+    
+    .ppt-sidebar {
+        width: 100%;
+        height: 150px;
+        border-right: none;
+        border-bottom: 1px solid #e1dfdd;
+    }
+    
+    .thumbnails-container {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 8px;
+        gap: 8px;
+    }
+    
+    .thumbnail-slide {
+        min-width: 120px;
+        margin-bottom: 0;
+        margin-right: 0;
+    }
+    
+    .thumbnail-content {
+        height: 80px;
+    }
+    
+    .ppt-preview-area {
+        flex: 1;
+    }
+    
+    .slide-display-area {
+        padding: 20px;
+    }
+    
+    .display-subtitle {
+        font-size: 20px;
+    }
+    
+    .display-content-text {
+        font-size: 16px;
+    }
+    
+    .positioned-subtitle {
+        /* 响应式下也不设置默认样式 */
+    }
+    
+    .positioned-text {
+        /* 响应式下也不设置默认样式 */
+    }
+    
+    .current-slide-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .current-slide-title {
+        max-width: 100%;
+    }
+    
+    /* 移动端幻灯片画布缩放 */
+    .slide-canvas {
+        transform: scale(0.8);
+        transform-origin: center top;
+    }
+}
+
+@media (max-width: 480px) {
+    .ppt-layout-container {
+        height: 400px;
+    }
+    
+    .ppt-header {
+        padding: 8px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .ppt-title {
+        font-size: 14px;
+    }
+    
+    .ppt-stats {
+        font-size: 12px;
+    }
+    
+    .ppt-sidebar {
+        height: 120px;
+    }
+    
+    .thumbnail-slide {
+        min-width: 100px;
+    }
+    
+    .thumbnail-content {
+        height: 70px;
+    }
+    
+    .thumbnail-title {
+        font-size: 11px;
+    }
+    
+    .slide-display-area {
+        padding: 15px;
+    }
+    
+    .display-subtitle {
+        font-size: 18px;
+    }
+    
+    .display-content-text {
+        font-size: 15px;
+    }
+    
+    .preview-header {
+        padding: 8px 15px;
+    }
+}
+
+/* 原有文本预览样式保持 */
+@media (max-width: 768px) {
+    .slide-text-header {
+        padding: 12px 15px;
+    }
+    
+    .slide-text-header h3 {
+        font-size: 16px;
+    }
+    
+    .slide-text-body {
+        padding: 15px;
+    }
+    
+    .slide-text-paragraph {
+        font-size: 14px;
+    }
+}

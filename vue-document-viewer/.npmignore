@@ -1,0 +1,31 @@
+# 开发文件
+src/views/
+src/router/
+src/main.js
+public/index.html
+public/favicon.ico
+demo-dist/
+node_modules/
+
+# 构建工具配置
+vue.config.js
+babel.config.js
+.eslintrc.js
+.gitignore
+.browserslistrc
+
+# 开发相关
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# 测试文件
+tests/
+coverage/
+*.test.js
+*.spec.js
+
+# 文档草稿
+docs/
+examples/
