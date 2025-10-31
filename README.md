@@ -13,7 +13,7 @@
 
 [GitHub](https://github.com/anohanafes/offline-document-viewer) | [Gitee](https://gitee.com/wang-qiuning/offline-document-viewer) | [npm](https://www.npmjs.com/package/@anohanafes/offline-document-viewer)
 
-[🔗 在线演示](https://anohanafes.github.io/offline-document-viewer/) | [📖 文档](https://github.com/anohanafes/offline-document-viewer/wiki) | [🐛 报告问题](https://github.com/anohanafes/offline-document-viewer/issues)
+[📖 使用文档](https://github.com/anohanafes/offline-document-viewer#readme) | [🐛 报告问题](https://github.com/anohanafes/offline-document-viewer/issues)
 
 </div>
 
