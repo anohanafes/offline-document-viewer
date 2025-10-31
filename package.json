@@ -1,6 +1,6 @@
 {
   "name": "@anohanafes/offline-document-viewer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🔒 完全离线的多格式文档预览器 - 支持PDF、DOCX、PPTX、XLSX、CSV，按需加载，支持URL预览",
   "main": "index.html",
   "files": [
