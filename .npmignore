@@ -7,9 +7,6 @@
 # Vue子项目
 vue-document-viewer/
 
-# 文档和示例（保留主README）
-CHANGELOG.md
-
 # 开发工具配置
 .eslintrc.js
 .prettierrc

@@ -7,6 +7,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/anohanafes/offline-document-viewer?style=social)](https://github.com/anohanafes/offline-document-viewer/stargazers)
 [![npm version](https://img.shields.io/npm/v/@anohanafes/offline-document-viewer.svg)](https://www.npmjs.com/package/@anohanafes/offline-document-viewer)
+[![Gitee stars](https://gitee.com/wang-qiuning/offline-document-viewer/badge/star.svg?theme=dark)](https://gitee.com/wang-qiuning/offline-document-viewer/stargazers)
+
+**🌐 仓库地址**
+
+[GitHub](https://github.com/anohanafes/offline-document-viewer) | [Gitee](https://gitee.com/wang-qiuning/offline-document-viewer) | [npm](https://www.npmjs.com/package/@anohanafes/offline-document-viewer)
 
 [🔗 在线演示](https://anohanafes.github.io/offline-document-viewer/) | [📖 文档](https://github.com/anohanafes/offline-document-viewer/wiki) | [🐛 报告问题](https://github.com/anohanafes/offline-document-viewer/issues)
 
@@ -28,7 +33,11 @@
 
 1. **克隆项目**
 ```bash
+# GitHub
 git clone https://github.com/anohanafes/offline-document-viewer.git
+# 或 Gitee（国内更快）
+git clone https://gitee.com/wang-qiuning/offline-document-viewer.git
+
 cd offline-document-viewer
 ```
 
@@ -212,7 +221,11 @@ npm install @anohanafes/offline-document-viewer
 
 ```bash
 # 克隆项目
+# GitHub
 git clone https://github.com/anohanafes/offline-document-viewer.git
+# 或 Gitee（国内更快）
+git clone https://gitee.com/wang-qiuning/offline-document-viewer.git
+
 cd offline-document-viewer
 
 # 启动服务
@@ -233,12 +246,14 @@ npx http-server -p 8080 -c-1
 5. **创建** Pull Request
 
 ### 🐛 报告问题
-- 使用 [GitHub Issues](https://github.com/anohanafes/offline-document-viewer/issues)
+- GitHub: [提交 Issue](https://github.com/anohanafes/offline-document-viewer/issues)
+- Gitee: [提交 Issue](https://gitee.com/wang-qiuning/offline-document-viewer/issues)
 - 提供详细的重现步骤
 - 包含浏览器版本和操作系统信息
 
 ### 💡 功能建议
-- 提交 [Feature Request](https://github.com/anohanafes/offline-document-viewer/issues/new)
+- GitHub: [Feature Request](https://github.com/anohanafes/offline-document-viewer/issues/new)
+- Gitee: [功能建议](https://gitee.com/wang-qiuning/offline-document-viewer/issues/new)
 - 描述期望的功能和使用场景
 - 解释为什么这个功能很有用
 
